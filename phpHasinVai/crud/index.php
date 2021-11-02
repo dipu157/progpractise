@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once "./inc/functions.php";
 $info = '';
 $task = $_GET['task'] ?? 'report';
@@ -93,11 +94,11 @@ if (isset($_POST['submit'])) {
             <div class="row">
                 <div class="column column-60 column-offset-20">
                     <?php generateReport(); ?>
-                    <div>
+                    <!-- <div>
                         <pre>
                             <?php printRaw(); ?>
                         </pre>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         <?php } ?>
@@ -148,21 +149,8 @@ if (isset($_POST['submit'])) {
         <?php }
         } ?>
     </div>
-    <!-- <script type="text/javascript" src="./assets/js/script.js"></script> -->
+    <script type="text/javascript" src="./assets/js/script.js"></script>
 </body>
 
-<script>
-    document.addEventListener('DOMContentLoader', function() {
-        console.log("Loaded");
-        var links = document.querySelectorAll(".delete");
-        for (i = 0; i < links.length; i++) {
-            links[i].addEventListener('click', function(e) {
-                if (!confirm("are you sure to delete !!")) {
-                    e.preventDefault();
-                }
-            });
-        }
-    });
-</script>
 
 </html>

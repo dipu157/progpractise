@@ -1,5 +1,6 @@
 <?php
-define('DB_Name', 'C:\xampp\htdocs\progpractise\phpHasinVai\crud\data\db.txt');
+//define('DB_Name', 'C:\xampp\htdocs\progpractise\phpHasinVai\crud\data\db.txt');
+define('DB_Name', 'C:\Apache24\htdocs\progpractise\phpHasinVai\crud\data\db.txt');
 function seed()
 {
     $data = array(
@@ -53,8 +54,12 @@ function generateReport()
                 <td><?php printf('%s', $student['id']); ?></td>
                 <td><?php printf('%s %s', $student['fname'], $student['lname']) ?></td>
                 <td><?php printf('%s', $student['roll']); ?></td>
-                <td><?php printf('<a href="/progpractise/phpHasinVai/crud/index.php?task=edit&id=%s">Edit</a> 
-                    | <a class="delete" href="/progpractise/phpHasinVai/crud/index.php?task=delete&id=%s">Delete</a>', $student['id'], $student['id']); ?></td>
+                <td>
+                    <?php if(isAdmin() || isEditor()): ?>
+                    <?php printf('<a href="/progpractise/phpHasinVai/crud/index.php?task=edit&id=%s">Edit</a> 
+                    | <a class="delete" href="/progpractise/phpHasinVai/crud/index.php?task=delete&id=%s">Delete</a>', $student['id'], $student['id']); ?>
+                    <?php endif ?>
+                </td>
             </tr>
         <?php } ?>
     </table>
@@ -157,5 +162,13 @@ function getNewId($students)
 {
     $maxId = max(array_column($students, 'id'));
     return $maxId + 1;
+}
+
+function isAdmin(){
+    return ('admin' == $_SESSION['role']);
+}
+
+function isEditor(){
+    return ('editor' == $_SESSION['role']);
 }
 ?>

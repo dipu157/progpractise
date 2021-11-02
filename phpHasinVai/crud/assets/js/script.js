@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoader', function () {
+document.addEventListener('DOMContentLoaded', function () {
     console.log("Loaded");
     var links = document.querySelectorAll(".delete");
     for (i = 0; i < links.length; i++) {
