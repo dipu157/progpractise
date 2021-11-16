@@ -19,6 +19,9 @@ if (!$connection) {
                 $query = "INSERT INTO `task`(`task`, `date`) VALUES ('{$task}','{$date}')";
                 mysqli_query($connection,$query);
                 header('Location: index.php?added=true');
+            }else if('complete' == $action){
+                $taskid = $_POST['taskid'];
+                echo $taskid;
             }
         }
     }
