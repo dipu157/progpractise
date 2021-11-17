@@ -75,9 +75,9 @@ $ComResult = mysqli_query($connection, $CompleteQuery);
                                     <td><?php echo $cdata['id']; ?></td>
                                     <td><?php echo $cdata['task']; ?></td>
                                     <td><?php echo $cdate; ?></td>
-                                    <td><a href="#"> Delete </td>
+                                    <td><a class="delete" data-taskid="<?php echo $cdata['id']; ?>" href="#"> Delete | <a class="incomplete" data-taskid="<?php echo $cdata['id']; ?>" href="#"> Mark Incomplete </td>
                                 </tr>
-                        <?php }
+                        <?php } 
                         }
                         ?>
                         </tbody>
@@ -89,6 +89,7 @@ $ComResult = mysqli_query($connection, $CompleteQuery);
                         <p>No Task Found</p>
                     <?php } else { ?>
                         <h4>Upcoming Task</h4>
+                        <form action="tasks.php" method="post">
                         <table>
                             <thead>
                                 <tr>
@@ -107,22 +108,23 @@ $ComResult = mysqli_query($connection, $CompleteQuery);
                                     $date = date("jS M, Y", $timestamp);
                                 ?>
                                     <tr>
-                                        <td><input class="label-inline" type="checkbox" value="<?php echo $data['id']; ?>"> </td>
+                                        <td><input name="taskids[]" class="label-inline" type="checkbox" value="<?php echo $data['id']; ?>"> </td>
                                         <td><?php echo $data['id']; ?></td>
                                         <td><?php echo $data['task']; ?></td>
                                         <td><?php echo $date; ?></td>
-                                        <td><a href="#"> Delete | <a class="complete" data-taskid="<?php echo $data['id']; ?>" href="#"> Complete </a> </td>
+                                        <td><a class="delete" data-taskid="<?php echo $data['id']; ?>" href="#"> Delete | <a class="complete" data-taskid="<?php echo $data['id']; ?>" href="#"> Complete </a> </td>
                                     </tr>
                                 <?php } ?>
                             </tbody>
                         </table>
 
-                        <select id="action">
+                        <select id="action" name="action">
                             <option value="0">With Selected</option>
-                            <option value="del">Delete</option>
-                            <option value="complete"> Mark as complete</option>
+                            <option value="bulkdel">Delete</option>
+                            <option value="bulkcomplete"> Mark as complete</option>
                         </select>
                         <input class="button-primary" type="submit" value="submit">
+                        </form>
                     <?php } ?>
             </div>
         </div>
@@ -156,8 +158,18 @@ $ComResult = mysqli_query($connection, $CompleteQuery);
     </div>
 
     <form action="tasks.php" method="post" id="completeform">
-        <input type="hidden" id="caction" name="action" value="complete">
+        <input type="hidden" name="action" value="complete">
         <input type="hidden" id="taskid" name="taskid">
+    </form>
+
+    <form action="tasks.php" method="post" id="deleteform">
+        <input type="hidden" name="action" value="delete">
+        <input type="hidden" id="dtaskid" name="taskid">
+    </form>
+
+    <form action="tasks.php" method="post" id="incompleteform">
+        <input type="hidden" name="action" value="incomplete">
+        <input type="hidden" id="itaskid" name="taskid">
     </form>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"></script>
@@ -168,7 +180,21 @@ $ComResult = mysqli_query($connection, $CompleteQuery);
                 var id = $(this).data("taskid");
                 $("#taskid").val(id);
                 $("#completeform").submit();
-            })
+            });
+
+            $(".delete").on('click',function(){
+                if(confirm("Are You Sure to Delete ? ")){
+                    var id = $(this).data("taskid");
+                $("#dtaskid").val(id);
+                $("#deleteform").submit();
+                }
+            });
+
+            $(".incomplete").on('click',function(){
+                var id = $(this).data("taskid");
+                $("#itaskid").val(id);
+                $("#incompleteform").submit();
+            });
         });
     })(jQuery);
 </script>
